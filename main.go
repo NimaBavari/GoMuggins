@@ -4,7 +4,7 @@ import (
 	"log"
 	"net/http"
 
-	muggins "github.com/NimaBavari/muggins/lib"
+	muggins "github.com/NimaBavari/GoMuggins/lib"
 	"github.com/gorilla/websocket"
 )
 

@@ -1,4 +1,4 @@
-module github.com/NimaBavari/muggins
+module github.com/NimaBavari/GoMuggins
 
 go 1.20
 
