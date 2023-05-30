@@ -1,1 +1,5 @@
-# Network Multiplayer Muggins Game
+# GoMuggins
+
+Network Multiplayer Muggins Game
+
+## Rules

@@ -13,9 +13,9 @@ type Player struct {
 }
 
 func (p *Player) DrawTile(r *Round) {
-	random_idx := rand.Intn(len(r.reserve))
-	p.hand = append(p.hand, r.reserve[random_idx])
-	r.reserve = append(r.reserve[:random_idx], r.reserve[random_idx+1:]...)
+	random_idx := rand.Intn(len(r.boneyard))
+	p.hand = append(p.hand, r.boneyard[random_idx])
+	r.boneyard = append(r.boneyard[:random_idx], r.boneyard[random_idx+1:]...)
 }
 
 func (p *Player) MakeMove(r *Round) {
@@ -37,7 +37,7 @@ func (p *Player) MakeMove(r *Round) {
 		}
 		elligibleTiles = maps.Keys(elligibilityMap)
 	}
-	for len(elligibleTiles) == 0 && len(r.reserve) > 1 {
+	for len(elligibleTiles) == 0 && len(r.boneyard) > 1 {
 		p.DrawTile(r)
 		lastDrawn := p.hand[len(p.hand)-1]
 		el := make([]int, 0)

@@ -22,7 +22,7 @@ func (g *Game) FindPlayerWithTile(t Tile) int {
 func (g *Game) DecideFirstPlayer(r Round) int {
 	starterTile := Tile{2, 3}
 	firstPlayerPos := g.FindPlayerWithTile(starterTile)
-	for firstPlayerPos == -1 && len(r.reserve) > 2 {
+	for firstPlayerPos == -1 && len(r.boneyard) > 2 {
 		for _, player := range g.Players {
 			player.DrawTile(&r)
 		}
@@ -65,7 +65,7 @@ func (g *Game) Play() {
 				}
 				if len(player.hand) == 0 {
 					if player.score < PRIV_CUTOFF {
-						otherHandsTotal := PIPS_SUM - (round.GetTableauSum() + round.GetReserveSum())
+						otherHandsTotal := PIPS_SUM - (round.GetTableauSum() + round.GetBoneyardSum())
 						player.score = GetMin(player.score+otherHandsTotal, PRIV_CUTOFF)
 					}
 					roundEnd = true

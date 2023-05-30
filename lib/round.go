@@ -8,11 +8,11 @@ type End struct {
 }
 
 type Round struct {
-	game    *Game
-	line    Tile
-	tableau []Tile
-	ends    []End
-	reserve []Tile
+	game     *Game
+	line     Tile
+	tableau  []Tile
+	ends     []End
+	boneyard []Tile
 }
 
 func (r Round) GetEndsSum() int {
@@ -35,16 +35,16 @@ func (r Round) GetTableauSum() int {
 	return s
 }
 
-func (r Round) GetReserveSum() int {
+func (r Round) GetBoneyardSum() int {
 	s := 0
-	for _, v := range r.reserve {
+	for _, v := range r.boneyard {
 		s += v.Face()
 	}
 	return s
 }
 
 func (r *Round) Setup(g *Game) {
-	r.reserve = []Tile{
+	r.boneyard = []Tile{
 		{0, 0}, {0, 1}, {0, 2}, {0, 3},
 		{0, 4}, {0, 5}, {0, 6}, {1, 1},
 		{1, 2}, {1, 3}, {1, 4}, {1, 5},
@@ -67,9 +67,9 @@ func (r *Round) Distribute() []Tile {
 	// TODO: Add support for hand contents criteria
 	hand := make([]Tile, NUM_TILES_PER_PLAYER)
 	for i := 0; i < NUM_TILES_PER_PLAYER; i++ {
-		random_idx := rand.Intn(len(r.reserve))
-		hand[i] = r.reserve[random_idx]
-		r.reserve = append(r.reserve[:random_idx], r.reserve[random_idx+1:]...)
+		random_idx := rand.Intn(len(r.boneyard))
+		hand[i] = r.boneyard[random_idx]
+		r.boneyard = append(r.boneyard[:random_idx], r.boneyard[random_idx+1:]...)
 	}
 	return hand
 }
