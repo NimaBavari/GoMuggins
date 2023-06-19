@@ -12,6 +12,8 @@ const NUM_TILES_PER_PLAYER int = 7
 const GAME_OVER_SCORE int = 365
 const PIPS_SUM int = 168
 const PRIV_CUTOFF int = 300
+const TABLEAU_SEP string = " | "
+const TILE_SEP string = ":"
 
 func GetMin[T constraints.Ordered](x T, y T) T {
 	if x <= y {
@@ -53,4 +55,14 @@ func Has[T comparable](arr []T, elem T) bool {
 		}
 	}
 	return false
+}
+
+func FindRotation(tableau string, end *End) int {
+	// TODO: return value is one of 1, 2, 3, 4
+	return 0
+}
+
+func Rotate(tableau string, rotAmt int) string {
+	// TODO: return the rotated tableau
+	return tableau
 }

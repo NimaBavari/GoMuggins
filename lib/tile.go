@@ -1,5 +1,17 @@
 package muggins
 
+import (
+	"strconv"
+	"strings"
+)
+
+func FromString(s string) Tile {
+	lr := strings.Split(s, TILE_SEP)
+	left, _ := strconv.Atoi(lr[0])
+	right, _ := strconv.Atoi(lr[1])
+	return Tile{left, right}
+}
+
 type Tile struct {
 	left  int
 	right int

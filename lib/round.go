@@ -1,6 +1,10 @@
 package muggins
 
-import "math/rand"
+import (
+	"fmt"
+	"math/rand"
+	"strings"
+)
 
 type End struct {
 	singleValue int
@@ -9,8 +13,8 @@ type End struct {
 
 type Round struct {
 	game     *Game
-	line     Tile
-	tableau  []Tile
+	line     interface{}
+	tableau  string
 	ends     []End
 	boneyard []Tile
 }
@@ -29,8 +33,8 @@ func (r Round) GetEndsSum() int {
 
 func (r Round) GetTableauSum() int {
 	s := 0
-	for _, v := range r.tableau {
-		s += v.Face()
+	for _, v := range strings.Split(r.tableau, TABLEAU_SEP) {
+		s += FromString(v).Face()
 	}
 	return s
 }
@@ -41,6 +45,23 @@ func (r Round) GetBoneyardSum() int {
 		s += v.Face()
 	}
 	return s
+}
+
+func (r *Round) AddToTableau(tl Tile, e *End) {
+	// Adds `tl` to the end `e`
+	if e == nil {
+		r.tableau = fmt.Sprintf("%d%s%d", tl.left, TILE_SEP, tl.right)
+		return
+	}
+	rotationAmt := FindRotation(r.tableau, e)
+	tempTableau := Rotate(r.tableau, rotationAmt)
+	inner := e.singleValue
+	outer := tl.right
+	if tl.right == inner {
+		outer = tl.left
+	}
+	ad := fmt.Sprintf("%s %s %d%s%d", tempTableau, TABLEAU_SEP, inner, TILE_SEP, outer)
+	r.tableau = Rotate(ad, -rotationAmt)
 }
 
 func (r *Round) Setup(g *Game) {

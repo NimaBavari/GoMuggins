@@ -1,6 +1,9 @@
 package muggins
 
-import "testing"
+import (
+	"reflect"
+	"testing"
+)
 
 func TestTile_Face(t *testing.T) {
 	type fields struct {
@@ -141,6 +144,30 @@ func TestTile_IsPlayable(t *testing.T) {
 			}
 			if got := tr.IsPlayable(tt.args.e); got != tt.want {
 				t.Errorf("Tile.IsPlayable() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestFromString(t *testing.T) {
+	type args struct {
+		s string
+	}
+	tests := []struct {
+		name string
+		args args
+		want Tile
+	}{
+		{
+			name: "three-five",
+			args: args{"3:5"},
+			want: Tile{3, 5},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := FromString(tt.args.s); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("FromString() = %v, want %v", got, tt.want)
 			}
 		})
 	}
