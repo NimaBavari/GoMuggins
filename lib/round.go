@@ -13,7 +13,7 @@ type End struct {
 
 type Round struct {
 	game     *Game
-	line     interface{}
+	line     *Tile
 	tableau  string
 	ends     []End
 	boneyard []Tile
@@ -48,7 +48,6 @@ func (r Round) GetBoneyardSum() int {
 }
 
 func (r *Round) AddToTableau(tl Tile, e *End) {
-	// Adds `tl` to the end `e`
 	if e == nil {
 		r.tableau = fmt.Sprintf("%d%s%d", tl.left, TILE_SEP, tl.right)
 		return
@@ -93,4 +92,18 @@ func (r *Round) Distribute() []Tile {
 		r.boneyard = append(r.boneyard[:random_idx], r.boneyard[random_idx+1:]...)
 	}
 	return hand
+}
+
+func (r *Round) CheckSetLine() {
+	if r.line != nil {
+		return
+	}
+	tiles_down_str := strings.Split(r.tableau, TABLEAU_SEP)
+	for idx, v := range tiles_down_str {
+		currentTile := FromString(v)
+		if currentTile.IsDouble() && idx != 0 && idx != len(tiles_down_str)-1 {
+			r.line = &currentTile
+			return
+		}
+	}
 }

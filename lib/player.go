@@ -22,7 +22,6 @@ func (p *Player) DrawTile(r *Round) {
 }
 
 func (p *Player) MakeMove(r *Round) {
-	// TODO: Solve the r.line problem: how to identify the existence and emergence of r.line?
 	// TODO: Solve the dropping of more than one tiles when they are divisible by 5
 	if len(r.ends) == 0 {
 		firstTile := GetChoice(r.game.Strm, p.hand)
@@ -85,4 +84,5 @@ func (p *Player) MakeMove(r *Round) {
 	}
 	r.ends[endPos] = newEnd
 	r.AddToTableau(choiceCombo.tl, &newEnd)
+	r.CheckSetLine()
 }
