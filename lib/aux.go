@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"strconv"
+	"strings"
 
 	"golang.org/x/exp/constraints"
 )
@@ -58,11 +59,81 @@ func Has[T comparable](arr []T, elem T) bool {
 }
 
 func FindRotation(tableau string, end *End) int {
-	// TODO: return value is one of 1, 2, 3, 4
+	// TODO: return value is one of 0, 1, 2, 3
+	// lines := strings.Split(tableau, "\n")
 	return 0
 }
 
+func withSpaces(simpleStr string) string {
+	lines := strings.Split(simpleStr, "\n")
+	totalLineLength := 0
+	for _, line := range lines {
+		if len(line) > totalLineLength {
+			totalLineLength = len(line)
+		}
+	}
+	resultStr := ""
+	for idx, line := range lines {
+		resultStr += line + strings.Repeat(" ", totalLineLength-len(line))
+		if idx != len(lines)-1 {
+			resultStr += "\n"
+		}
+	}
+	if len(lines) > totalLineLength {
+		hlines := strings.Split(resultStr, "\n")
+		resultStr = ""
+		for idx, hline := range hlines {
+			resultStr += hline + strings.Repeat(" ", len(lines)-totalLineLength)
+			if idx != len(hlines)-1 {
+				resultStr += "\n"
+			}
+		}
+
+	} else if len(lines) < totalLineLength {
+		resultStr += strings.Repeat("\n"+strings.Repeat(" ", totalLineLength), totalLineLength-len(lines))
+	}
+	return resultStr
+}
+
+func withoutSpaces(squareStr string) string {
+	resultStr := ""
+	reducedStrList := strings.Split(strings.TrimRight(squareStr, "\n\t "), "\n")
+	for idx, line := range reducedStrList {
+		resultStr += strings.TrimRight(line, "\t ")
+		if idx != len(reducedStrList)-1 {
+			resultStr += "\n"
+		}
+	}
+	return resultStr
+}
+
+func rotateStringOnce(squareStr string) string {
+	matrix := make([][]rune, 0)
+	for _, line := range strings.Split(squareStr, "\n") {
+		matrix = append(matrix, []rune(line))
+	}
+	for i, j := 0, len(matrix)-1; i < j; i, j = i+1, j-1 {
+		matrix[i], matrix[j] = matrix[j], matrix[i]
+	}
+	for i := 0; i < len(matrix); i++ {
+		for j := 0; j < i; j++ {
+			matrix[i][j], matrix[j][i] = matrix[j][i], matrix[i][j]
+		}
+	}
+	rotatedStr := ""
+	for idx, row := range matrix {
+		rotatedStr += string(row)
+		if idx != len(matrix)-1 {
+			rotatedStr += "\n"
+		}
+	}
+	return rotatedStr
+}
+
 func Rotate(tableau string, rotAmt int) string {
-	// TODO: return the rotated tableau
-	return tableau
+	resultTableau := withSpaces(tableau)
+	for i := 0; i < (rotAmt % 4); i++ {
+		resultTableau = rotateStringOnce(resultTableau)
+	}
+	return withoutSpaces(resultTableau)
 }

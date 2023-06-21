@@ -98,10 +98,10 @@ func (r *Round) CheckSetLine() {
 	if r.line != nil {
 		return
 	}
-	tiles_down_str := strings.Split(r.tableau, TABLEAU_SEP)
-	for idx, v := range tiles_down_str {
+	groundTileStrs := strings.Split(r.tableau, TABLEAU_SEP)
+	for idx, v := range groundTileStrs {
 		currentTile := FromString(v)
-		if currentTile.IsDouble() && idx != 0 && idx != len(tiles_down_str)-1 {
+		if currentTile.IsDouble() && idx != 0 && idx != len(groundTileStrs)-1 {
 			r.line = &currentTile
 			return
 		}
