@@ -151,17 +151,17 @@ func Rotate(tableau string, rotAmt int) string {
 }
 
 func GetMaxSame(hand []Tile) int {
-	tilesGrouped := make(map[int][]Tile)
+	tilesGrouped := make(map[int]int)
 	for _, t := range hand {
 		if !t.IsDouble() {
-			tilesGrouped[t.left] = append(tilesGrouped[t.left], t)
-			tilesGrouped[t.right] = append(tilesGrouped[t.right], t)
+			tilesGrouped[t.left]++
+			tilesGrouped[t.right]++
 		}
 	}
 	maxSame := 0
 	for _, v := range tilesGrouped {
-		if len(v) > maxSame {
-			maxSame = len(v)
+		if v > maxSame {
+			maxSame = v
 		}
 	}
 	return maxSame
