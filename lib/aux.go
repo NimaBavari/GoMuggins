@@ -59,9 +59,21 @@ func Has[T comparable](arr []T, elem T) bool {
 }
 
 func FindRotation(tableau string, end *End) int {
-	// TODO: return value is one of 0, 1, 2, 3
-	// lines := strings.Split(tableau, "\n")
-	return 0
+	lines := strings.Split(tableau, "\n")
+	endStr := strconv.Itoa(end.singleValue)
+	for idx, line := range lines {
+		if strings.Contains(line, endStr) {
+			if idx == 0 {
+				return 1
+			} else if idx < len(lines)-1 {
+				if strings.Index(line, endStr) == 0 {
+					return 2
+				}
+				return 0
+			}
+		}
+	}
+	return 3
 }
 
 func withSpaces(simpleStr string) string {
@@ -136,4 +148,21 @@ func Rotate(tableau string, rotAmt int) string {
 		resultTableau = rotateStringOnce(resultTableau)
 	}
 	return withoutSpaces(resultTableau)
+}
+
+func GetMaxSame(hand []Tile) int {
+	tilesGrouped := make(map[int][]Tile)
+	for _, t := range hand {
+		if !t.IsDouble() {
+			tilesGrouped[t.left] = append(tilesGrouped[t.left], t)
+			tilesGrouped[t.right] = append(tilesGrouped[t.right], t)
+		}
+	}
+	maxSame := 0
+	for _, v := range tilesGrouped {
+		if len(v) > maxSame {
+			maxSame = len(v)
+		}
+	}
+	return maxSame
 }

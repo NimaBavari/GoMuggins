@@ -84,12 +84,18 @@ func (r *Round) Setup(g *Game) {
 }
 
 func (r *Round) Distribute() []Tile {
-	// TODO: Add support for hand contents criteria
+	tempBoneyard := r.boneyard
 	hand := make([]Tile, NUM_TILES_PER_PLAYER)
-	for i := 0; i < NUM_TILES_PER_PLAYER; i++ {
-		random_idx := rand.Intn(len(r.boneyard))
-		hand[i] = r.boneyard[random_idx]
-		r.boneyard = append(r.boneyard[:random_idx], r.boneyard[random_idx+1:]...)
+	handsCorrect := false
+	for !handsCorrect {
+		r.boneyard = tempBoneyard
+		hand = make([]Tile, NUM_TILES_PER_PLAYER)
+		for i := 0; i < NUM_TILES_PER_PLAYER; i++ {
+			random_idx := rand.Intn(len(r.boneyard))
+			hand[i] = r.boneyard[random_idx]
+			r.boneyard = append(r.boneyard[:random_idx], r.boneyard[random_idx+1:]...)
+		}
+		handsCorrect = GetMaxSame(hand) < 5
 	}
 	return hand
 }
