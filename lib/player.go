@@ -27,11 +27,11 @@ func (p *Player) MakeMove(r *Round) {
 	if len(r.ends) == 0 {
 		firstTile := GetChoice(r.game.Strm, p.hand)
 		if firstTile.IsDouble() {
-			r.ends = []End{{singleValue: firstTile.left, isDouble: true, development: true}}
+			r.ends = []End{{singleValue: firstTile.left, isDouble: true, isDeveloped: true}}
 		} else {
 			r.ends = []End{
-				{singleValue: firstTile.left, isDouble: false, development: true},
-				{singleValue: firstTile.right, isDouble: false, development: true},
+				{singleValue: firstTile.left, isDeveloped: true},
+				{singleValue: firstTile.right, isDeveloped: true},
 			}
 		}
 		r.AddToTableau(firstTile, nil)
@@ -79,7 +79,7 @@ func (p *Player) MakeMove(r *Round) {
 		}
 	}
 	p.hand = append(p.hand[:tilePos], p.hand[tilePos+1:]...)
-	newEnd := End{singleValue: choiceCombo.tl.left, isDouble: choiceCombo.tl.IsDouble()}
+	newEnd := End{singleValue: choiceCombo.tl.left, isDouble: choiceCombo.tl.IsDouble(), isDeveloped: true}
 	if choiceCombo.tl.left == choiceCombo.end {
 		newEnd.singleValue = choiceCombo.tl.right
 	}
