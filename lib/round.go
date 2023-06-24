@@ -9,6 +9,7 @@ import (
 type End struct {
 	singleValue int
 	isDouble    bool
+	development bool
 }
 
 type Round struct {
@@ -22,9 +23,12 @@ type Round struct {
 func (r Round) GetEndsSum() int {
 	s := 0
 	for _, v := range r.ends {
-		d := 1
-		if v.isDouble {
-			d = 2
+		d := 0
+		if v.development {
+			d = 1
+			if v.isDouble {
+				d = 2
+			}
 		}
 		s += v.singleValue * d
 	}
@@ -109,7 +113,14 @@ func (r *Round) CheckSetLine() {
 		currentTile := FromString(v)
 		if currentTile.IsDouble() && idx != 0 && idx != len(groundTileStrs)-1 {
 			r.line = &currentTile
-			return
+			break
 		}
+	}
+	if r.line != nil {
+		r.ends = append(
+			r.ends,
+			End{singleValue: r.line.left, isDouble: true},
+			End{singleValue: r.line.right, isDouble: true},
+		)
 	}
 }

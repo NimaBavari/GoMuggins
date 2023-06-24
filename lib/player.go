@@ -23,14 +23,15 @@ func (p *Player) DrawTile(r *Round) {
 
 func (p *Player) MakeMove(r *Round) {
 	// TODO: Solve the dropping of more than one tiles when they are divisible by 5
+	// TODO: What happens if len(r.ends) == 1?
 	if len(r.ends) == 0 {
 		firstTile := GetChoice(r.game.Strm, p.hand)
 		if firstTile.IsDouble() {
-			r.ends = []End{{singleValue: firstTile.left, isDouble: true}}
+			r.ends = []End{{singleValue: firstTile.left, isDouble: true, development: true}}
 		} else {
 			r.ends = []End{
-				{singleValue: firstTile.left, isDouble: false},
-				{singleValue: firstTile.right, isDouble: false},
+				{singleValue: firstTile.left, isDouble: false, development: true},
+				{singleValue: firstTile.right, isDouble: false, development: true},
 			}
 		}
 		r.AddToTableau(firstTile, nil)
