@@ -23,7 +23,6 @@ func (p *Player) DrawTile(r *Round) {
 
 func (p *Player) MakeMove(r *Round) {
 	// TODO: Solve the dropping of more than one tiles when they are divisible by 5
-	// TODO: What happens if len(r.ends) == 1?
 	if len(r.ends) == 0 {
 		firstTile := GetChoice(r.game.Strm, p.hand)
 		if firstTile.IsDouble() {
@@ -83,7 +82,11 @@ func (p *Player) MakeMove(r *Round) {
 	if choiceCombo.tl.left == choiceCombo.end {
 		newEnd.singleValue = choiceCombo.tl.right
 	}
-	r.ends[endPos] = newEnd
+	if len(r.ends) == 1 {
+		r.ends = append(r.ends, newEnd)
+	} else {
+		r.ends[endPos] = newEnd
+	}
 	r.AddToTableau(choiceCombo.tl, &newEnd)
 	r.CheckSetLine()
 }
